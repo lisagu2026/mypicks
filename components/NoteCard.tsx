@@ -11,34 +11,36 @@ type NoteCardProps = {
 
 export function NoteCard(props: NoteCardProps) {
   return (
-    <article className="rounded-xl border border-line bg-white p-3">
-      <div className="mb-2 flex items-start justify-between gap-3">
-        <p className="text-xs text-muted">#{props.index + 1}</p>
+    <article className="rounded-[24px] border border-line/55 bg-[#fbfdff] px-4 py-4 shadow-[0_14px_34px_-30px_rgba(35,57,92,0.18)]">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <p className="rounded-full bg-white px-2.5 py-1 text-xs text-muted">#{props.index + 1}</p>
         <button
           type="button"
           onClick={() => props.onDelete(props.note.id)}
-          className="rounded-md px-2 py-1 text-xs text-[#8a3f30] hover:bg-[#f7ebe8]"
+          className="rounded-full px-2.5 py-1 text-xs text-muted transition hover:bg-white"
         >
           删除
         </button>
       </div>
 
-      <div className="space-y-2 text-sm">
+      <div className="space-y-2.5 text-sm">
         <div>
-          <p className="text-xs text-muted">原文</p>
-          <pre className="whitespace-pre-wrap break-words font-sans">{props.note.text}</pre>
+          <p className="mb-1 text-xs text-muted">原文</p>
+          <pre className="whitespace-pre-wrap break-words font-sans leading-6">{props.note.text}</pre>
         </div>
         <div>
-          <p className="text-xs text-muted">原文翻译</p>
-          <pre className="whitespace-pre-wrap break-words font-sans">{props.note.translation}</pre>
+          <p className="mb-1 text-xs text-muted">原文翻译</p>
+          <pre className="whitespace-pre-wrap break-words font-sans leading-6 text-[#35567f]">
+            {props.note.translation}
+          </pre>
         </div>
-        <details className="rounded-md border border-line bg-paper p-2">
+        <details className="rounded-2xl bg-white px-3 py-2.5">
           <summary className="cursor-pointer text-xs text-muted">语境句</summary>
-          <pre className="mt-2 whitespace-pre-wrap break-words font-sans">{props.note.context || "（空）"}</pre>
+          <pre className="mt-2 whitespace-pre-wrap break-words font-sans leading-6">{props.note.context || "（空）"}</pre>
         </details>
-        <details className="rounded-md border border-line bg-paper p-2">
+        <details className="rounded-2xl bg-white px-3 py-2.5">
           <summary className="cursor-pointer text-xs text-muted">语境翻译</summary>
-          <pre className="mt-2 whitespace-pre-wrap break-words font-sans">
+          <pre className="mt-2 whitespace-pre-wrap break-words font-sans leading-6 text-[#35567f]">
             {props.note.contextTranslation || "（空）"}
           </pre>
         </details>
@@ -51,7 +53,7 @@ export function NoteCard(props: NoteCardProps) {
             value={props.note.userNote}
             onChange={(e) => props.onChangeUserNote(props.note.id, e.target.value)}
             rows={3}
-            className="w-full rounded-md border border-line bg-[#fffefb] p-2 outline-none focus:border-accent"
+            className="w-full rounded-2xl border border-line/55 bg-white p-3 outline-none transition focus:ring-4 focus:ring-[#3a72b7]/10"
           />
         </div>
       </div>

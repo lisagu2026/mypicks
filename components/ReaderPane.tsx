@@ -31,6 +31,18 @@ type ReaderPaneProps = {
 export function ReaderPane(props: ReaderPaneProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
+  function shouldIgnoreSelectionEvent(target: EventTarget | null): boolean {
+    if (!(target instanceof Element)) {
+      return false;
+    }
+
+    return Boolean(
+      target.closest(
+        '[data-selection-popover],textarea,input,button,select,option,[contenteditable="true"]'
+      )
+    );
+  }
+
   const updateSelection = useCallback(() => {
     const container = containerRef.current;
     if (!container || !props.fullText) {
@@ -87,28 +99,41 @@ export function ReaderPane(props: ReaderPaneProps) {
   }, [props]);
 
   return (
-    <section className="flex min-h-0 flex-col rounded-2xl border border-line bg-white">
-      <div className="border-b border-line px-4 py-3">
-        <h2 className="text-sm font-medium">阅读区</h2>
+    <section className="flex min-h-0 flex-col rounded-[30px] border border-white/80 bg-white/62 p-2 shadow-[0_20px_50px_-38px_rgba(35,57,92,0.26)]">
+      <div className="flex items-center justify-between px-3 py-2">
+        <h2 className="text-sm font-semibold tracking-wide text-ink">阅读区</h2>
+        <span className="text-xs text-muted">划词后可翻译和提问</span>
       </div>
       <div
         ref={containerRef}
-        onMouseUp={updateSelection}
-        onKeyUp={updateSelection}
+        onMouseUp={(e) => {
+          if (shouldIgnoreSelectionEvent(e.target)) {
+            return;
+          }
+          updateSelection();
+        }}
+        onKeyUp={(e) => {
+          if (shouldIgnoreSelectionEvent(e.target)) {
+            return;
+          }
+          updateSelection();
+        }}
         onMouseDown={(e) => {
           if (e.target === containerRef.current) {
             props.onClosePopover();
           }
         }}
-        className="relative min-h-0 flex-1 overflow-auto px-4 py-4"
+        className="relative min-h-0 flex-1 overflow-auto rounded-[26px] border border-line/60 bg-white px-4 py-4 md:px-5 md:py-5"
       >
         {props.fullText ? (
-          <pre className="whitespace-pre-wrap break-words font-sans text-[15px] leading-7 text-ink">
+          <pre className="whitespace-pre-wrap break-words font-sans text-[15px] leading-8 text-ink selection:bg-[#3a72b7]/15">
             {props.fullText}
           </pre>
         ) : (
-          <div className="flex h-full min-h-[260px] items-center justify-center text-sm text-muted">
-            在上方粘贴全文并点击“开始学习”
+          <div className="flex h-full min-h-[280px] items-center justify-center">
+            <div className="px-6 py-8 text-center text-sm text-muted">
+              在上方粘贴全文并点击“开始学习”
+            </div>
           </div>
         )}
 

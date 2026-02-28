@@ -7,11 +7,15 @@
 - TypeScript
 - Tailwind CSS
 
+当前 AI 接法：
+- 前端调用本地 `/api/*`
+- Next.js Route Handler 转发到 DeepSeek
+
 目标：
 - 划词即用
 - 刷新不丢（`localStorage`）
 - 可导出 Markdown
-- AI 能力先用 mock，后续可替换真实 API
+- AI 能力已接入 DeepSeek，后续可替换模型供应商
 
 ## 运行方式
 
@@ -27,6 +31,21 @@ npm run dev
 建议 Node 版本：
 - `18.18+` 或 `20+`
 
+## 配置 DeepSeek
+
+1. 在项目根目录创建 `.env.local`
+2. 填入以下内容：
+
+```bash
+DEEPSEEK_API_KEY=你的真实Key
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-chat
+```
+
+说明：
+- 不要把 `.env.local` 提交到 GitHub
+- 项目里已经提供了模板：`/Users/max/Documents/lisavibe/mypicks/.env.example`
+
 ## 功能说明
 
 ### 页面结构
@@ -34,7 +53,7 @@ npm run dev
   - 全文输入框（粘贴全文）
   - `开始学习`
   - `导出 Markdown`
-  - `AI 复盘（mock）`
+  - `AI 复盘`
 - 主体两栏
   - 左：阅读区（保留换行）
   - 右：笔记区（NoteCard 列表）
@@ -124,10 +143,16 @@ lib/
 
 ## 后续替换真实 API（保留接口形状）
 
-当前 mock 实现在：
+当前前端请求入口在：
 - `/Users/max/Documents/lisavibe/mypicks/lib/api.ts`
 
-你后续只需要替换函数内部实现，保持函数签名不变：
+DeepSeek 服务端转发实现在：
+- `/Users/max/Documents/lisavibe/mypicks/lib/deepseek.ts`
+- `/Users/max/Documents/lisavibe/mypicks/app/api/translate/route.ts`
+- `/Users/max/Documents/lisavibe/mypicks/app/api/ask/route.ts`
+- `/Users/max/Documents/lisavibe/mypicks/app/api/review/route.ts`
+
+如果你后续更换模型供应商，只需要替换服务端实现，保持前端函数签名不变：
 
 - `translateSelection({ selectedText, contextSentence })`
   - 返回 `{ selectedTranslation, contextTranslation }`

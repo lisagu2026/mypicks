@@ -9,10 +9,10 @@ const config: Config = {
     extend: {
       colors: {
         ink: "#1f1f1f",
-        paper: "#f6f4ef",
-        line: "#dfdbd1",
-        muted: "#6f6a5e",
-        accent: "#2f5d50"
+        paper: "#f4f7fb",
+        line: "#d9e1ec",
+        muted: "#617082",
+        accent: "#3a72b7"
       }
     }
   },
